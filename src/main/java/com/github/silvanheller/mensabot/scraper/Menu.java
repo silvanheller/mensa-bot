@@ -30,7 +30,7 @@ public class Menu {
      */
     public String displayString() {
         StringBuilder builder = new StringBuilder();
-        builder.append( "Heutiges Menü:" ).append( "\n" );
+        builder.append( "Heutiges Menü:" ).append( "\n \n" );
         for ( Food food : getItems() ) {
             builder.append( food.displayString() );
             builder.append( "\n" );
@@ -55,7 +55,7 @@ public class Menu {
      */
     public String markdownString() {
         StringBuilder builder = new StringBuilder();
-        builder.append( "Heutiges Menü:" ).append( "\n" );
+        builder.append( "Heutiges Menü:" ).append( "\n \n" );
         for ( Food food : getItems() ) {
             builder.append( food.markdownString() );
             builder.append( "\n" );
