@@ -23,7 +23,7 @@ public class MensaBot extends TelegramLongPollingBot {
     public void onUpdateReceived( Update update ) {
         if ( update.hasMessage() && update.getMessage().hasText() ) {
             String message_text = update.getMessage().getText();
-            if ( message_text.equals( "/menu" ) ) {
+            if ( message_text.contains( "/menu" ) ) {
                 LOGGER.debug( "Scraping menu" );
                 SendMessage message = generateMessage( "Error occured", update );
                 try {
