@@ -22,6 +22,10 @@
       <AppenderRef ref="Console"/>
       <AppenderRef ref="File"/>
     </logger>
+    <logger name="com" level="ERROR">
+      <AppenderRef ref="Console"/>
+      <AppenderRef ref="File"/>
+    </logger>
     <logger name="com.github.silvanheller" level="DEBUG">
     </logger>
     <Root level="debug"/>
