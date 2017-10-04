@@ -25,6 +25,9 @@ public class Menu {
     }
 
 
+    /**
+     * Simple, nonformatted display String
+     */
     public String displayString() {
         StringBuilder builder = new StringBuilder();
         builder.append( "Heutiges Menü:" ).append( "\n" );
@@ -36,13 +39,27 @@ public class Menu {
     }
 
 
-    public void addFood( Food food ) {
+    void addFood( Food food ) {
         items.add( food );
     }
 
 
-    public Menu( List<Food> items ) {
+    Menu( List<Food> items ) {
 
         this.items = items;
+    }
+
+
+    /**
+     * MD-Formatted String
+     */
+    public String markdownString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append( "Heutiges Menü:" ).append( "\n" );
+        for ( Food food : getItems() ) {
+            builder.append( food.markdownString() );
+            builder.append( "\n" );
+        }
+        return builder.toString();
     }
 }

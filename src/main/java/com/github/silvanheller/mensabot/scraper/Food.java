@@ -1,5 +1,8 @@
 package com.github.silvanheller.mensabot.scraper;
 
+import org.telegram.telegrambots.api.objects.inlinequery.inputmessagecontent.InputMessageContent;
+import org.telegram.telegrambots.api.objects.inlinequery.inputmessagecontent.InputTextMessageContent;
+
 /**
  * Internal Representation of a Menu Item
  *
@@ -45,12 +48,46 @@ public class Food {
     }
 
 
+    /**
+     * Beautiful display String. No formatting Applied
+     */
     public String displayString() {
         StringBuilder builder = new StringBuilder();
         builder.append( title ).append( "\n" );
         builder.append( description ).append( "\n" );
         if ( !studentPrice.equals( PRICE_NOT_FOUND ) ) {
             builder.append( "Und das ganze zum sagenhaften Preis von " ).append( studentPrice ).append( "\n" );
+        }
+        return builder.toString();
+    }
+
+
+    /**
+     * Short Description and Price for Inline Queries
+     */
+    public String getDescriptionString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append( description ).append( "\n" );
+        if ( !studentPrice.equals( PRICE_NOT_FOUND ) ) {
+            builder.append( "Preis: " ).append( studentPrice ).append( "\n" );
+        }
+        return builder.toString();
+    }
+
+    /**
+     * See https://core.telegram.org/bots/api#inputmessagecontent for Documentation
+     */
+    public InputMessageContent getInputMessageMarkdownContent() {
+        return new InputTextMessageContent().setMessageText( markdownString() ).setParseMode( "Markdown" );
+    }
+
+
+    public String markdownString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append( "*" ).append( title ).append( "*" ).append( "\n" );
+        builder.append( description ).append( "\n" );
+        if ( !studentPrice.equals( PRICE_NOT_FOUND ) ) {
+            builder.append( "Preis: " ).append( studentPrice ).append( "\n" );
         }
         return builder.toString();
     }
