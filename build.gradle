@@ -10,7 +10,6 @@ apply plugin: 'idea'
 
 
 group 'com.github.silvanheller.mensabot'
-version '0.2.0-SNAPSHOT'
 
 def mainClassName = 'com.github.silvanheller.mensabot.main.Main'
 
@@ -41,7 +40,6 @@ jar {
     }
     manifest {
         attributes "Manifest-Version": "1.0"
-        attributes "Version": "$version"
         attributes 'Main-Class': mainClassName
     }
     baseName "mensa-bot"
