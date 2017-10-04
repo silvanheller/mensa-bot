@@ -1,0 +1,58 @@
+repositories {
+    mavenCentral()
+    maven {
+        url 'https://oss.sonatype.org/content/repositories/snapshots/'
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'idea'
+
+
+group 'com.github.silvanheller.mensabot'
+version '0.1.0-SNAPSHOT'
+
+def mainClassName = 'com.github.silvanheller.mensabot.main.Main'
+
+compileJava.options.encoding = 'UTF-8'
+sourceCompatibility = 1.8
+
+dependencies {
+
+    ////// LOGGING
+    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.22'
+    compile group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: '2.7'
+    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.7'
+
+    ////// TELEGRAM
+    compile group: 'org.telegram', name: 'telegrambots', version: '3.3'
+
+    //CONFIG
+    compile group: 'com.typesafe', name: 'config', version: '1.3.1'
+
+    //SCRAPING
+    compile group: 'org.jsoup', name: 'jsoup', version: '1.10.3'
+}
+
+// Make the jar executable on its own aswell
+jar {
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    manifest {
+        attributes "Manifest-Version": "1.0"
+        attributes "Version": "$version"
+        attributes 'Main-Class': mainClassName
+    }
+    baseName "mensa-bot"
+}
+
+//IDEA if gradle is buggy
+idea {
+    module {
+        downloadJavadoc = true
+        //Exclude downloaded stuff
+        excludeDirs += file('storage')
+        excludeDirs += file('logs')
+    }
+}

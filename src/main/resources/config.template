@@ -1,0 +1,4 @@
+# Make a copy of this file called mensabot.conf
+mensa-bot {
+    token="DO_NOT_UPLOAD_YOUR_SECRET_TOKEN"
+}

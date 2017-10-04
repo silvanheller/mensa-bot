@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="INFO">
+  <Properties>
+    <Property name="loggingPattern">[%d{HH:mm:ss.SSS}][%level][%t] %C{1} - %msg%n</Property>
+  </Properties>
+  <Appenders>
+    <Console name="Console" target="SYSTEM_OUT">
+      <PatternLayout pattern="${loggingPattern}"/>
+      <ThresholdFilter level="trace" onMatch="ACCEPT" onMismatch="DENY"/>
+    </Console>
+    <File name="File" fileName="logs/mensabot_${date:yyyy-MM-dd_HH-mm-ss}.log">
+      <PatternLayout pattern="${loggingPattern}"/>
+      <ThresholdFilter level="trace" onMatch="ACCEPT" onMismatch="DENY"/>
+    </File>
+  </Appenders>
+  <Loggers>
+    <logger name="io" level="ERROR">
+      <AppenderRef ref="Console"/>
+      <AppenderRef ref="File"/>
+    </logger>
+    <logger name="org" level="ERROR">
+      <AppenderRef ref="Console"/>
+      <AppenderRef ref="File"/>
+    </logger>
+    <logger name="com.github.silvanheller" level="DEBUG">
+    </logger>
+    <Root level="debug"/>
+  </Loggers>
+</Configuration>

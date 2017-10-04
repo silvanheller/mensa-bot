@@ -1,0 +1,30 @@
+##IntelliJ
+.idea
+build/
+out/
+
+##Log Files
+*.log
+/logs/
+
+
+##Java
+.class
+
+##General OS-Specific things
+*.DS_Store
+*.swp
+*.swo
+*.tmp
+*.bak
+._*
+Thumbs.db
+Desktop.ini
+
+
+##Gradle
+.gradle
+
+#Tokens
+mensabot.conf
+
