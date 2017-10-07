@@ -26,6 +26,38 @@ public class MensaBot extends TelegramLongPollingBot {
     private static final Logger LOGGER = LogManager.getLogger();
 
 
+    /**
+     * Takes a /menu command passed to the bot. The following forms are supported:
+     * `/menu` - Returns the menu for the current day (or the next day the mensa is open) (default and fallback)
+     * `/menu +X` , X <- [0,4] - Returns the menu for the Xth day from today (or the next day the mensa is open)
+     * `/menu ab` , ab <- [mo, di, mi, do, fr, sa, so] - Returns the menu for the next instance of the given weekday
+     * @param request The command sent to the MensaBot
+     * @return The menu scraped from the website
+     * @throws IOException If some web stuff goes wrong
+     */
+    private Menu getMenu(String request) throws IOException {
+        Menu menu;
+        if (request.contains("+")) {
+            String[] tokens = request.split("\\+");
+            if (tokens.length >= 2) {
+                int dayOffset = Integer.parseInt(tokens[1].trim());
+                menu = MainMensaScraper.getMenu(dayOffset);
+            } else {
+                menu = MainMensaScraper.getMenu();
+            }
+        } else if (request.contains(" ")) {
+            String[] tokens = request.split(" ");
+            if (tokens.length >= 2) {
+                menu = MainMensaScraper.getMenu(tokens[1]);
+            } else {
+                menu = MainMensaScraper.getMenu();
+            }
+        } else {
+            menu = MainMensaScraper.getMenu();
+        }
+        return menu;
+    }
+
     @Override
     public void onUpdateReceived( Update update ) {
         if ( update.hasInlineQuery() ) {
@@ -33,7 +65,7 @@ public class MensaBot extends TelegramLongPollingBot {
             if ( text.contains( "/menu" ) || text.isEmpty() ) {
                 try {
                     LOGGER.debug( "Answering Inline Query" );
-                    Menu menu = MainMensaScraper.getMenu();
+                    Menu menu = getMenu(text);
                     List<InlineQueryResult> results = new ArrayList<>();
                     for ( Food food : menu.getItems() ) {
                         InlineQueryResultArticle item = new InlineQueryResultArticle().setTitle( food.getTitle() ).setDescription( food.getDescriptionString() ).setInputMessageContent( food.getInputMessageMarkdownContent() ).setId( UUID.randomUUID().toString() );
@@ -52,7 +84,7 @@ public class MensaBot extends TelegramLongPollingBot {
             if ( message_text.contains( "/menu" ) ) {
                 LOGGER.debug( "Scraping menu" );
                 try {
-                    Menu menu = MainMensaScraper.getMenu();
+                    Menu menu = getMenu(message_text);
                     SendMessage message = generateMarkdownMessage( menu.markdownString(), update );
                     execute( message ); // Call method to send the message
                 } catch ( TelegramApiException | IOException e ) {

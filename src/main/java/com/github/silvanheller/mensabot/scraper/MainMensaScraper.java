@@ -1,11 +1,12 @@
 package com.github.silvanheller.mensabot.scraper;
 
-import java.io.IOException;
-import java.util.ArrayList;
+import com.github.silvanheller.mensabot.util.GermanWeekdayConv;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
+
+import java.io.IOException;
 
 /**
  * @author silvan on 04.10.17.
@@ -21,13 +22,60 @@ public class MainMensaScraper {
         System.out.println( menu.displayString() );
     }
 
-
     public static Menu getMenu() throws IOException {
+        return getMenu(0);
+    }
+
+    public static Menu getMenu(int dayOffset) throws IOException {
+        if ( dayOffset < 0 ) {
+            return Menu.PAST;
+        }
+        if ( dayOffset > 4 ) {
+            return Menu.FUTURE;
+        }
+        //The website uses 1-based indices
+        dayOffset++;
         Element body = Jsoup.connect( url ).get().body();
         LOGGER.trace( body );
-        Menu menu = new Menu( new ArrayList<>() );
-        Element today = body.getElementById( "menu-plan-tab1" );
-        for ( Element item : today.getElementsByClass( "menu-item" ) ) {
+        String dayOfWeekSelector = String.format( "label[for=mp-tab%d] > span.day", dayOffset );
+        String menuDivId = String.format( "menu-plan-tab%d", dayOffset );
+        String dayOfWeek = body.select(dayOfWeekSelector).first().html();
+        Element todaysMenu = body.getElementById( menuDivId );
+        Menu menu = new Menu( dayOfWeek );
+        parseBody(menu, todaysMenu);
+        return menu;
+    }
+
+    public static Menu getMenu(String weekday) throws IOException, IndexOutOfBoundsException {
+        int dow = GermanWeekdayConv.abbreviatedWeekdayToCalendar(weekday);
+        Element body = Jsoup.connect( url ).get().body();
+        LOGGER.trace( body );
+        String dayOfWeekSelector = "label > span.day";
+        int dayOffset = -1;
+        String dayOfWeek = null;
+        for (Element dayOfWeekElem : body.select(dayOfWeekSelector)) {
+            String inner = dayOfWeekElem.html();
+            if (GermanWeekdayConv.abbreviatedWeekdayToCalendar(inner) == dow) {
+                String forAttr = dayOfWeekElem.parent().attr("for");
+                forAttr = forAttr.substring(forAttr.length() - 1);
+                dayOffset = Integer.parseInt(forAttr);
+                dayOfWeek = inner;
+                break;
+            }
+        }
+        if (dayOffset == -1) {
+            return Menu.CLOSED;
+        }
+        String menuDivId = String.format( "menu-plan-tab%d", dayOffset );
+        Element todaysMenu = body.getElementById( menuDivId );
+        Menu menu = new Menu( dayOfWeek );
+        parseBody(menu, todaysMenu);
+        return menu;
+    }
+
+    public static void parseBody(Menu menu, Element menuElement) throws IOException {
+
+        for ( Element item : menuElement.getElementsByClass( "menu-item" ) ) {
             String title = getElementByClass( item, "menu-title" ).ownText();
             LOGGER.trace( "Title extracted {} from {}", title, getElementByClass( item, "menu-title" ).toString() );
             String description = getElementByClass( item, "menu-description" ).ownText();
@@ -46,7 +94,6 @@ public class MainMensaScraper {
             Food food = new Food( title, description, price );
             menu.addFood( food );
         }
-        return menu;
 
     }
 
