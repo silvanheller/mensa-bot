@@ -1,7 +1,8 @@
 package com.github.silvanheller.mensabot.scraper;
 
-import org.telegram.telegrambots.api.objects.inlinequery.inputmessagecontent.InputMessageContent;
-import org.telegram.telegrambots.api.objects.inlinequery.inputmessagecontent.InputTextMessageContent;
+import com.github.silvanheller.mensabot.util.MarkdownUtil;
+import org.telegram.telegrambots.meta.api.objects.inlinequery.inputmessagecontent.InputMessageContent;
+import org.telegram.telegrambots.meta.api.objects.inlinequery.inputmessagecontent.InputTextMessageContent;
 
 /**
  * Internal Representation of a Menu Item
@@ -89,6 +90,6 @@ public class Food {
         if ( !studentPrice.equals( PRICE_NOT_FOUND ) ) {
             builder.append( "Preis: " ).append( studentPrice ).append( "\n" );
         }
-        return builder.toString();
+        return MarkdownUtil.escapeMarkdown(builder.toString());
     }
 }

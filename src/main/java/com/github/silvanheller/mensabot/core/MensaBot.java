@@ -10,13 +10,13 @@ import java.util.List;
 import java.util.UUID;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.telegram.telegrambots.api.methods.AnswerInlineQuery;
-import org.telegram.telegrambots.api.methods.send.SendMessage;
-import org.telegram.telegrambots.api.objects.Update;
-import org.telegram.telegrambots.api.objects.inlinequery.result.InlineQueryResult;
-import org.telegram.telegrambots.api.objects.inlinequery.result.InlineQueryResultArticle;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
-import org.telegram.telegrambots.exceptions.TelegramApiException;
+import org.telegram.telegrambots.meta.api.methods.AnswerInlineQuery;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.inlinequery.result.InlineQueryResult;
+import org.telegram.telegrambots.meta.api.objects.inlinequery.result.InlineQueryResultArticle;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 /**
  * @author silvan on 04.10.17.
@@ -82,9 +82,10 @@ public class MensaBot extends TelegramLongPollingBot {
         if ( update.hasMessage() && update.getMessage().hasText() ) {
             String message_text = update.getMessage().getText();
             if ( message_text.contains( "/menu" ) ) {
-                LOGGER.debug( "Scraping menu" );
+                LOGGER.trace( "Scraping menu" );
                 try {
                     Menu menu = getMenu(message_text);
+                    LOGGER.trace("Generated menu: {} with md-string {}", menu, menu.markdownString());
                     SendMessage message = generateMarkdownMessage( menu.markdownString(), update );
                     execute( message ); // Call method to send the message
                 } catch ( TelegramApiException | IOException e ) {
