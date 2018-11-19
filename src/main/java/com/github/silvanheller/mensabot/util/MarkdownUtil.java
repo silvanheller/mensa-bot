@@ -5,7 +5,6 @@ public class MarkdownUtil {
   public static final String escapeMarkdown(String md){
     return md
         .replace("_", "\\_")
-        .replace("*", "\\*")
         .replace("[", "\\[")
         .replace("`", "\\`");
   }
