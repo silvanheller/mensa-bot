@@ -19,18 +19,18 @@ sourceCompatibility = 1.8
 dependencies {
 
     ////// LOGGING
-    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.22'
-    compile group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: '2.7'
-    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.7'
+    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.+'
+    compile group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: '2.+'
+    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.+'
 
     ////// TELEGRAM
-    compile group: 'org.telegram', name: 'telegrambots', version: '4.1'
+    compile group: 'org.telegram', name: 'telegrambots', version: '4.+'
 
     //CONFIG
-    compile group: 'com.typesafe', name: 'config', version: '1.3.3'
+    compile group: 'com.typesafe', name: 'config', version: '1.+'
 
     //SCRAPING
-    compile group: 'org.jsoup', name: 'jsoup', version: '1.11.3'
+    compile group: 'org.jsoup', name: 'jsoup', version: '1.+'
 }
 
 // Make the jar executable on its own aswell
