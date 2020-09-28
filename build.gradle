@@ -1,15 +1,15 @@
-repositories {
-    mavenCentral()
-    maven {
-        url 'https://oss.sonatype.org/content/repositories/snapshots/'
-    }
+plugins {
+    id 'java'
+    id 'application'
+    id 'idea'
 }
 
-apply plugin: 'java'
-apply plugin: 'idea'
-
+repositories {
+    mavenCentral()
+}
 
 group 'com.github.silvanheller.mensabot'
+version '1.0.0'
 
 def mainClassName = 'com.github.silvanheller.mensabot.main.Main'
 
@@ -19,31 +19,37 @@ sourceCompatibility = JavaVersion.VERSION_11
 dependencies {
 
     ////// LOGGING
-    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.+'
-    compile group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: '2.+'
-    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.+'
+    implementation 'org.apache.logging.log4j:log4j-api:2.+'
+    implementation 'org.apache.logging.log4j:log4j-core:2.+'
 
     ////// TELEGRAM
-    compile group: 'org.telegram', name: 'telegrambots', version: '4.+'
+    implementation group: 'org.telegram', name: 'telegrambots', version: '4.+'
 
     //CONFIG
-    compile group: 'com.typesafe', name: 'config', version: '1.+'
+    implementation group: 'com.typesafe', name: 'config', version: '1.+'
 
     //SCRAPING
-    compile group: 'org.jsoup', name: 'jsoup', version: '1.+'
+    implementation group: 'org.jsoup', name: 'jsoup', version: '1.+'
 }
 
-// Make the jar executable on its own aswell
+/*
+The following block adds both compile and runtime dependencies to the jar
+ */
 jar {
-    from {
-        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
-    }
     manifest {
-        attributes "Manifest-Version": "1.0"
-        attributes 'Main-Class': mainClassName
+        attributes(
+                "Manifest-Version": "1.0",
+                'Main-Class': mainClassName,
+                'multi-release': true
+        )
     }
-    baseName "mensa-bot"
+    from {
+        configurations.compileClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    archiveBaseName.set("mensa-bot")
 }
+
 
 //IDEA if gradle is buggy
 idea {
