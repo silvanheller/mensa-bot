@@ -14,7 +14,7 @@ group 'com.github.silvanheller.mensabot'
 def mainClassName = 'com.github.silvanheller.mensabot.main.Main'
 
 compileJava.options.encoding = 'UTF-8'
-sourceCompatibility = 1.8
+sourceCompatibility = JavaVersion.VERSION_11
 
 dependencies {
 
