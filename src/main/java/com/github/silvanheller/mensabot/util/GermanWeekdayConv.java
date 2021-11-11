@@ -4,16 +4,14 @@ import java.util.Calendar;
 
 /**
  * Convenience methods for handling german-localized weekdays
- * @author s3lph
- * @since 2017/10/07
  */
 public class GermanWeekdayConv {
 
     /**
      * @param abbr German two-letter weekday abbreviation
      * @return The corresponding Calendar weekday constant
-     * @see java.util.Calendar
      * @throws IllegalArgumentException If the abbreviation is invalid
+     * @see java.util.Calendar
      */
     public static int abbreviatedWeekdayToCalendar(String abbr) {
         abbr = abbr.trim().toLowerCase().substring(0, 2);

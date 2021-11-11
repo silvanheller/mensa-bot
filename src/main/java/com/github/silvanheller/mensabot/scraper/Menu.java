@@ -8,8 +8,6 @@ import java.util.List;
 
 /**
  * Internal Representation of the Menu
- *
- * @author silvan on 04.10.17.
  */
 public class Menu {
 
@@ -40,17 +38,16 @@ public class Menu {
 
     };
 
-    private List<Food> items;
+    private final List<Food> items;
 
-    private int dayOfWeek;
+    private final int dayOfWeek;
 
 
-
-    Menu( String dayOfWeek ) {
-        this( new ArrayList<>(), dayOfWeek );
+    Menu(String dayOfWeek) {
+        this(new ArrayList<>(), dayOfWeek);
     }
 
-    Menu( List<Food> items, String dayOfWeek ) {
+    Menu(List<Food> items, String dayOfWeek) {
         this.items = items;
         this.dayOfWeek = GermanWeekdayConv.abbreviatedWeekdayToCalendar(dayOfWeek);
     }
@@ -74,18 +71,18 @@ public class Menu {
      * Simple, nonformatted display String
      */
     public String displayString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append( getTitle() ).append( "\n \n" );
-        for ( Food food : getItems() ) {
-            builder.append( food.displayString() );
-            builder.append( "\n" );
+        var builder = new StringBuilder();
+        builder.append(getTitle()).append("\n \n");
+        for (Food food : getItems()) {
+            builder.append(food.displayString());
+            builder.append("\n");
         }
         return builder.toString();
     }
 
 
-    void addFood( Food food ) {
-        items.add( food );
+    void addFood(Food food) {
+        items.add(food);
     }
 
 
@@ -93,17 +90,17 @@ public class Menu {
      * MD-Formatted String
      */
     public String markdownString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append( getTitle() ).append( "\n \n" );
-        for ( Food food : getItems() ) {
-            builder.append( food.markdownString() );
-            builder.append( "\n" );
+        var builder = new StringBuilder();
+        builder.append(getTitle()).append("\n \n");
+        for (Food food : getItems()) {
+            builder.append(food.markdownString());
+            builder.append("\n");
         }
         return builder.toString();
     }
 
     private String getTitle() {
-        Calendar today = Calendar.getInstance();
+        var today = Calendar.getInstance();
         if (today.get(Calendar.DAY_OF_WEEK) == this.dayOfWeek &&
                 this.dayOfWeek != Calendar.SATURDAY &&
                 this.dayOfWeek != Calendar.SUNDAY) {
