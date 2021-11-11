@@ -50,6 +50,10 @@ jar {
     archiveBaseName.set("mensa-bot")
 }
 
+rootProject.tasks.named("jar") {
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+}
+
 
 //IDEA if gradle is buggy
 idea {
