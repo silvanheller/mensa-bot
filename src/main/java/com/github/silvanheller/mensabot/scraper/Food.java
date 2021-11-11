@@ -6,15 +6,13 @@ import org.telegram.telegrambots.meta.api.objects.inlinequery.inputmessageconten
 
 /**
  * Internal Representation of a Menu Item
- *
- * @author silvan on 04.10.17.
  */
 public class Food {
 
     public static final String PRICE_NOT_FOUND = "nicht verfügbar";
-    private String title;
-    private String description;
-    private String studentPrice;
+    private final String title;
+    private final String description;
+    private final String studentPrice;
 
 
     public String getTitle() {
@@ -32,7 +30,7 @@ public class Food {
     }
 
 
-    Food( String title, String description, String studentPrice ) {
+    Food(String title, String description, String studentPrice) {
         this.title = title;
         this.description = description;
         this.studentPrice = studentPrice;
@@ -53,11 +51,11 @@ public class Food {
      * Beautiful display String. No formatting Applied
      */
     public String displayString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append( title ).append( "\n" );
-        builder.append( description ).append( "\n" );
-        if ( !studentPrice.equals( PRICE_NOT_FOUND ) ) {
-            builder.append( "Und das ganze zum sagenhaften Preis von " ).append( studentPrice ).append( "\n" );
+        var builder = new StringBuilder();
+        builder.append(title).append("\n");
+        builder.append(description).append("\n");
+        if (!studentPrice.equals(PRICE_NOT_FOUND)) {
+            builder.append("Und das ganze zum sagenhaften Preis von ").append(studentPrice).append("\n");
         }
         return builder.toString();
     }
@@ -67,10 +65,10 @@ public class Food {
      * Short Description and Price for Inline Queries
      */
     public String getDescriptionString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append( description ).append( "\n" );
-        if ( !studentPrice.equals( PRICE_NOT_FOUND ) ) {
-            builder.append( "Preis: " ).append( studentPrice ).append( "\n" );
+        var builder = new StringBuilder();
+        builder.append(description).append("\n");
+        if (!studentPrice.equals(PRICE_NOT_FOUND)) {
+            builder.append("Preis: ").append(studentPrice).append("\n");
         }
         return builder.toString();
     }
@@ -79,16 +77,19 @@ public class Food {
      * See https://core.telegram.org/bots/api#inputmessagecontent for Documentation
      */
     public InputMessageContent getInputMessageMarkdownContent() {
-        return new InputTextMessageContent().setMessageText( markdownString() ).setParseMode( "Markdown" );
+        var msg = new InputTextMessageContent();
+        msg.setMessageText(markdownString());
+        msg.setParseMode("Markdown");
+        return msg;
     }
 
 
     public String markdownString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append( "*" ).append( title ).append( "*" ).append( "\n" );
-        builder.append( description ).append( "\n" );
-        if ( !studentPrice.equals( PRICE_NOT_FOUND ) ) {
-            builder.append( "Preis: " ).append( studentPrice ).append( "\n" );
+        var builder = new StringBuilder();
+        builder.append("*").append(title).append("*").append("\n");
+        builder.append(description).append("\n");
+        if (!studentPrice.equals(PRICE_NOT_FOUND)) {
+            builder.append("Preis: ").append(studentPrice).append("\n");
         }
         return MarkdownUtil.escapeMarkdown(builder.toString());
     }
