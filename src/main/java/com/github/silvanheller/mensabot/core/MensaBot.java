@@ -4,6 +4,7 @@ import com.github.silvanheller.mensabot.config.BotConfig;
 import com.github.silvanheller.mensabot.scraper.Food;
 import com.github.silvanheller.mensabot.scraper.MainMensaScraper;
 import com.github.silvanheller.mensabot.scraper.Menu;
+import com.github.silvanheller.mensabot.visuals.ImageFinder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -25,6 +26,25 @@ import java.util.UUID;
 public class MensaBot extends TelegramLongPollingBot {
 
     private static final Logger LOGGER = LogManager.getLogger();
+    private final ImageFinder finder;
+
+    public MensaBot(ImageFinder finder) {
+        this.finder = finder;
+        initCache();
+    }
+
+    private void initCache() {
+        LOGGER.debug("initializing cache");
+        try {
+            var menu = MainMensaScraper.getMenu();
+            menu.getItems().forEach(food -> {
+                LOGGER.debug("initializing cache for {}", food.getTitle());
+                finder.getThumbURLForFood(food.getTitle());
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 
     /**
@@ -75,8 +95,21 @@ public class MensaBot extends TelegramLongPollingBot {
                         item.setDescription(food.getDescriptionString());
                         item.setInputMessageContent(food.getInputMessageMarkdownContent());
                         item.setId(UUID.randomUUID().toString());
+                        if (BotConfig.THUMBNAILS_ENABLED) {
+                            var url = finder.getThumbURLForFood(food.getTitle());
+                            if (url != null) {
+                                item.setThumbUrl(url);
+                            }
+                        }
                         results.add(item);
                     }
+                    // all
+                    var item = new InlineQueryResultArticle();
+                    item.setTitle("Komplettes Menü");
+                    item.setDescription("Komplettes Menü des heutigen Tages");
+                    item.setInputMessageContent(menu.getInputMessageMarkdownContent());
+                    item.setId(UUID.randomUUID().toString());
+                    results.add(item);
 
                     var answer = new AnswerInlineQuery();
                     answer.setResults(results);

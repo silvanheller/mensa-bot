@@ -66,7 +66,7 @@ public class Food {
      */
     public String getDescriptionString() {
         var builder = new StringBuilder();
-        builder.append(description).append("\n");
+        builder.append(description).append(" \n");
         if (!studentPrice.equals(PRICE_NOT_FOUND)) {
             builder.append("Preis: ").append(studentPrice).append("\n");
         }
@@ -82,7 +82,6 @@ public class Food {
         msg.setParseMode("Markdown");
         return msg;
     }
-
 
     public String markdownString() {
         var builder = new StringBuilder();

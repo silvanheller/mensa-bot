@@ -29,3 +29,6 @@ Desktop.ini
 #Tokens
 mensabot.conf
 
+# cache
+storage/
+

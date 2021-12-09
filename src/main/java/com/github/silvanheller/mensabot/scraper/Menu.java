@@ -1,6 +1,8 @@
 package com.github.silvanheller.mensabot.scraper;
 
 import com.github.silvanheller.mensabot.util.GermanWeekdayConv;
+import org.telegram.telegrambots.meta.api.objects.inlinequery.inputmessagecontent.InputMessageContent;
+import org.telegram.telegrambots.meta.api.objects.inlinequery.inputmessagecontent.InputTextMessageContent;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -97,6 +99,16 @@ public class Menu {
             builder.append("\n");
         }
         return builder.toString();
+    }
+
+    /**
+     * See https://core.telegram.org/bots/api#inputmessagecontent for Documentation
+     */
+    public InputMessageContent getInputMessageMarkdownContent() {
+        var msg = new InputTextMessageContent();
+        msg.setMessageText(markdownString());
+        msg.setParseMode("Markdown");
+        return msg;
     }
 
     private String getTitle() {
