@@ -55,6 +55,8 @@ jar {
         configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
     }
     archiveBaseName.set("mensa-bot")
+
+    exclude("META-INF/*.RSA", "META-INF/*.DSA", "META-INF/*.SF")
 }
 
 rootProject.tasks.named("jar") {
