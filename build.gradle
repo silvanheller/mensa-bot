@@ -22,13 +22,20 @@ dependencies {
     implementation 'org.apache.logging.log4j:log4j-api:2.+'
     implementation 'org.apache.logging.log4j:log4j-core:2.+'
 
+    // JSON
+    implementation group: 'com.google.code.gson', name: 'gson', version: '2.8.9'
+
+    // API Requests
+    implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '4.9.3'
+    implementation group: 'com.microsoft.bing', name: 'bing-imagesearch', version: '1.0.0'
+
     ////// TELEGRAM
     implementation group: 'org.telegram', name: 'telegrambots', version: '5.+'
 
-    //CONFIG
+    // CONFIG
     implementation group: 'com.typesafe', name: 'config', version: '1.+'
 
-    //SCRAPING
+    // SCRAPING
     implementation group: 'org.jsoup', name: 'jsoup', version: '1.+'
 }
 

@@ -2,4 +2,13 @@
 mensa-bot {
     token="DO_NOT_UPLOAD_YOUR_SECRET_TOKEN"
     botname="UnibasMensaBot"
+    imagefinder="bing"
+}
+
+bing {
+    token="DO_NOT_UPLOAD"
+}
+
+thumbnails {
+    enabled="false"
 }
