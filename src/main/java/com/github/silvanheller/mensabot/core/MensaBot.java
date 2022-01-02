@@ -34,15 +34,17 @@ public class MensaBot extends TelegramLongPollingBot {
     }
 
     private void initCache() {
-        LOGGER.debug("initializing cache");
-        try {
-            var menu = MainMensaScraper.getMenu();
-            menu.getItems().forEach(food -> {
-                LOGGER.debug("initializing cache for {}", food.getTitle());
-                finder.getThumbURLForFood(food.getTitle());
-            });
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (BotConfig.THUMBNAILS_ENABLED) {
+            LOGGER.debug("initializing cache");
+            try {
+                var menu = MainMensaScraper.getMenu();
+                menu.getItems().forEach(food -> {
+                    LOGGER.debug("initializing cache for {}", food.getTitle());
+                    finder.getThumbURLForFood(food.getTitle());
+                });
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
